@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内灘町の「食」PRサイト</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#196DAC',   /* 第一カラー：青系 */
+                        secondary: '#186845', /* 第二カラー：緑系 */
+                        cream: '#FDFBF7'      /* 背景用クリーム色 */
+                    },
+                    fontFamily: {
+                        sans: ['"Hiragino Maru Gothic ProN"', '"ヒラギノ丸ゴ ProN W4"', 'Meiryo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FDFBF7;
+            background-image: radial-gradient(rgba(25, 109, 172, 0.1) 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+        
+        .floating-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .floating-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .highlight-marker {
+            background: linear-gradient(transparent 60%, rgba(24, 104, 69, 0.3) 60%);
+        }
+
+        /* --- 驚きの仕掛け（スプラッシュスクリーン）用スタイル --- */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background-color: #FDFBF7;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            animation: hide-splash 0s ease 2.6s forwards;
+        }
+
+        /* 幕が上がるような演出 */
+        .splash-bg-green {
+            position: absolute;
+            inset: 0;
+            background-color: #186845;
+            transform-origin: top;
+            animation: slide-up-splash 0.8s cubic-bezier(0.86, 0, 0.07, 1) 1.6s forwards;
+        }
+
+        .splash-bg-blue {
+            position: absolute;
+            inset: 0;
+            background-color: #196DAC;
+            transform-origin: top;
+            animation: slide-up-splash 0.8s cubic-bezier(0.86, 0, 0.07, 1) 1.8s forwards;
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 900;
+        }
+
+        .splash-text {
+            color: #FDFBF7;
+            display: inline-block;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+            font-size: 3.5rem;
+            line-height: 1.1;
+        }
+
+        @media (min-width: 768px) {
+            .splash-text { font-size: 5.5rem; }
+            .splash-content { flex-direction: row; gap: 1.5rem; }
+        }
+
+        .splash-text span {
+            display: inline-block;
+            transform: translateY(100%);
+            animation: reveal-text 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .splash-text:nth-child(1) span { animation-delay: 0.2s; }
+        .splash-text:nth-child(2) span { animation-delay: 0.4s; color: #186845; }
+        .splash-text:nth-child(3) span { animation-delay: 0.6s; }
+
+        @keyframes reveal-text {
+            to { transform: translateY(0); }
+        }
+        @keyframes slide-up-splash {
+            to { transform: translateY(-100%); }
+        }
+        @keyframes hide-splash {
+            to { width: 0; height: 0; visibility: hidden; opacity: 0; z-index: -1; }
+        }
+
+        /* --- メインコンテンツのポップインアニメーション --- */
+        .pop-in-element {
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            animation: pop-in 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .delay-2000 { animation-delay: 2.0s; }
+        .delay-2200 { animation-delay: 2.2s; }
+        .delay-2400 { animation-delay: 2.4s; }
+
+        @keyframes pop-in {
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased font-sans">
+
+    <div id="splash-screen">
+        <div class="splash-bg-green"></div>
+        <div class="splash-bg-blue"></div>
+        <div class="splash-content font-sans tracking-tighter">
+            <div class="splash-text"><span>UCHINADA</span></div>
+            <div class="splash-text"><span>FOOD</span></div>
+        </div>
+    </div>
+
+    <header class="pt-16 pb-12 px-4 text-center relative overflow-hidden">
+        <div class="absolute top-[-50px] left-[-50px] w-32 h-32 bg-primary rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-[-20px] right-[-20px] w-40 h-40 bg-secondary rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-pulse delay-1000"></div>
+
+        <div class="max-w-4xl mx-auto relative z-10">
+            <!-- 絵文字の代わりにSVGアイコンを使用 -->
+            <span class="pop-in-element delay-2000 inline-flex items-center gap-1 py-1 px-4 rounded-full bg-white text-secondary font-bold border-2 border-secondary mb-4 shadow-sm">
+                海と砂丘が育む恵み
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>
+                </svg>
+            </span>
+            <div class="pop-in-element delay-2200 inline-block relative">
+                <h1 class="text-4xl md:text-6xl font-black text-primary mb-6 tracking-tight leading-tight">
+                    おいしい！<br class="md:hidden">内灘町の「食」
+                </h1>
+                <div class="absolute bottom-3 left-0 w-full h-4 bg-secondary opacity-20 -z-10 rounded-full transform -rotate-2"></div>
+            </div>
+            <p class="pop-in-element delay-2400 text-lg md:text-xl text-gray-700 font-bold mt-4 mb-8 max-w-2xl mx-auto leading-relaxed">
+                内灘町には、地元の人たちに愛される素敵な特産品がいっぱい！<br>
+                代表的な３つの「食」の魅力をご紹介します。
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 pb-20 space-y-16">
+        
+        <section class="pop-in-element delay-2400 floating-card bg-white rounded-3xl shadow-lg p-6 md:p-10 border-t-8 border-primary flex flex-col md:flex-row gap-8 items-center">
+            <div class="w-full md:w-5/12 shrink-0">
+                <div class="w-full h-64 md:h-80 bg-gray-100 border-4 border-dashed border-gray-300 rounded-3xl flex flex-col items-center justify-center text-gray-400 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gray-200 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                    <svg class="w-16 h-16 mb-4 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span class="font-bold text-2xl tracking-wider relative z-10">No images</span>
+                </div>
+            </div>
+            
+            <div class="w-full md:w-7/12">
+                <span class="bg-secondary text-white text-sm font-bold px-4 py-1.5 rounded-full mb-4 inline-block shadow-sm">昔ながらのおやつ</span>
+                <h2 class="text-3xl font-black text-primary mb-6 flex items-center">
+                    <!-- 絵文字の代わりに図形SVG -->
+                    <svg class="w-8 h-8 mr-3 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="6" width="16" height="12" rx="6" />
+                        <circle cx="9" cy="12" r="2" fill="currentColor"/>
+                        <circle cx="15" cy="12" r="2" fill="currentColor"/>
+                    </svg>
+                    内灘餅（ピーナッツ餅）
+                </h2>
+                <div class="text-gray-700 space-y-4 leading-loose text-lg">
+                    <p>
+                        砂丘地で穫れる落花生をふんだんに入れた、優しい甘さの「ピーナッツ餅」は、内灘町の西荒屋地区で昔から子どもたちに愛されてきたおやつです。
+                    </p>
+                    <p>
+                        昔ながらの味を絶やさないよう、西荒屋地区の地域おこし団体<span class="font-bold text-primary">「西荒屋営農促進会」</span>のメンバーが、「内灘餅」として、ひとつひとつ丁寧に手作業で製造・販売しています。
+                    </p>
+                    <p class="font-bold bg-cream p-4 rounded-xl border border-gray-200 inline-block">
+                        ピーナッツも餅米も <span class="text-secondary text-xl">Made in 内灘</span>。<br>
+                        風味豊かな食感と優しい甘さが特徴です！
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="floating-card bg-white rounded-3xl shadow-lg p-6 md:p-10 border-t-8 border-secondary flex flex-col md:flex-row-reverse gap-8 items-center">
+            <div class="w-full md:w-5/12 shrink-0">
+                <div class="w-full h-64 md:h-80 bg-gray-100 border-4 border-dashed border-gray-300 rounded-3xl flex flex-col items-center justify-center text-gray-400 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gray-200 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                    <svg class="w-16 h-16 mb-4 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span class="font-bold text-2xl tracking-wider relative z-10">No images</span>
+                </div>
+            </div>
+            
+            <div class="w-full md:w-7/12">
+                <span class="bg-primary text-white text-sm font-bold px-4 py-1.5 rounded-full mb-4 inline-block shadow-sm">砂丘の恵み</span>
+                <h2 class="text-3xl font-black text-secondary mb-6 flex items-center">
+                    <!-- 絵文字の代わりにキラキラSVG -->
+                    <svg class="w-8 h-8 mr-3 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2l2.4 7.6 7.6 2.4-7.6 2.4-2.4 7.6-2.4-7.6-7.6-2.4 7.6-2.4z" />
+                    </svg>
+                    砂丘の真珠（らっきょう）
+                </h2>
+                <div class="text-gray-700 space-y-4 leading-loose text-lg">
+                    <p>
+                        内灘砂丘で採れた3年子らっきょうは、ひと粒ひと粒、手作業で丁寧に皮を取り酢漬けしており、<span class="highlight-marker font-bold">シャキシャキとした歯ごたえ</span>が特徴です。
+                    </p>
+                    <p>
+                        <span class="font-bold text-secondary">「おいCまち内灘」</span>は、無農薬・非化学肥料を使用し、町内の高校生や高齢者の方とも連携して加工・販売を行っています。
+                    </p>
+                    <div class="mt-4 flex items-center gap-4 bg-cream p-4 rounded-xl border border-gray-200">
+                        <!-- 🤝の代わりにハートをモチーフにした協力のアイコン -->
+                        <svg class="w-10 h-10 text-secondary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                        <p class="text-sm font-bold text-gray-600">
+                            地域のみんなで協力して作られた、<br>安心・安全でとってもおいしい逸品です！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="floating-card bg-white rounded-3xl shadow-lg p-6 md:p-10 border-t-8 border-primary flex flex-col md:flex-row gap-8 items-center">
+            <div class="w-full md:w-5/12 shrink-0">
+                <div class="w-full h-64 md:h-80 bg-gray-100 border-4 border-dashed border-gray-300 rounded-3xl flex flex-col items-center justify-center text-gray-400 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gray-200 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+                    <svg class="w-16 h-16 mb-4 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span class="font-bold text-2xl tracking-wider relative z-10">No images</span>
+                </div>
+            </div>
+            
+            <div class="w-full md:w-7/12">
+                <span class="bg-secondary text-white text-sm font-bold px-4 py-1.5 rounded-full mb-4 inline-block shadow-sm">酪農のまち</span>
+                <h2 class="text-3xl font-black text-primary mb-6 flex items-center">
+                    <!-- 絵文字の代わりにミルクボトル風SVG -->
+                    <svg class="w-8 h-8 mr-3 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 2h8v20H8z"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M4 14h16v2H4z"/>
+                    </svg>
+                    ミルク王国ウチナダ
+                </h2>
+                <div class="text-gray-700 space-y-4 leading-loose text-lg">
+                    <p>
+                        内灘町は日本海に面し、河北潟や内灘砂丘が広がる町です。河北潟干拓地では酪農が営まれ、<span class="highlight-marker font-bold">令和5年度には石川県の牛乳生産量の61%</span>を内灘町産が占めています。
+                    </p>
+                    <p>
+                        <span class="font-bold text-primary text-xl">「ミルク王国ウチナダ」</span>では、内灘町のミルクでおもてなしする店を「ミルク王国の店」として認定し、各店がオリジナル商品を提供しています。
+                    </p>
+                    <div class="grid grid-cols-2 gap-2 mt-4">
+                        <!-- 絵文字をすべてシンプルなマークに置換 -->
+                        <div class="bg-cream border border-gray-200 p-3 rounded-lg text-center font-bold text-gray-600 text-sm flex items-center justify-center">
+                            <span class="w-2.5 h-2.5 bg-primary rounded-full mr-2"></span>新鮮な牛乳
+                        </div>
+                        <div class="bg-cream border border-gray-200 p-3 rounded-lg text-center font-bold text-gray-600 text-sm flex items-center justify-center">
+                            <span class="w-2.5 h-2.5 bg-secondary rounded-full mr-2"></span>スイーツ
+                        </div>
+                        <div class="bg-cream border border-gray-200 p-3 rounded-lg text-center font-bold text-gray-600 text-sm flex items-center justify-center">
+                            <span class="w-2.5 h-2.5 bg-primary rounded-full mr-2"></span>オリジナル料理
+                        </div>
+                        <div class="bg-cream border border-gray-200 p-3 rounded-lg text-center font-bold text-gray-600 text-sm flex items-center justify-center">
+                            <span class="w-2.5 h-2.5 bg-secondary rounded-full mr-2"></span>おもてなし
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="w-full overflow-hidden leading-none mb-[-1px]">
+        <svg class="relative block w-[calc(100%+1.3px)] h-[60px] md:h-[100px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.52,195.3,101.45Z" fill="#196DAC"></path>
+        </svg>
+    </div>
+    
+    <footer class="bg-primary text-white text-center py-10 px-4">
+        <div class="max-w-4xl mx-auto flex flex-col items-center">
+            <h3 class="text-2xl font-black mb-4">内灘町の「食」を味わおう！</h3>
+            <p class="text-sm opacity-80 font-bold mb-6">
+                海と砂丘が育んだ、内灘町ならではの美味しい特産品。<br class="hidden md:block">
+                ぜひ一度、味わってみてください。
+            </p>
+            <div class="w-16 h-1 bg-white opacity-30 rounded-full mb-6"></div>
+            <p class="text-xs opacity-70">&copy; Uchinada Town Food Promotion.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
